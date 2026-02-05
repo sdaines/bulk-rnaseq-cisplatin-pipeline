@@ -1,0 +1,7 @@
+sample_id	fastq_r1	fastq_r2	condition	batch	treatment_duration_hours	cisplatin_concentration_uM	timepoint_hours	cell_confluence_pct
+C1	C1_R1.fastq.gz	C1_R2.fastq.gz	cisplatin	1	24	10	24	80
+C2	C2_R1.fastq.gz	C2_R2.fastq.gz	cisplatin	1	24	10	24	80
+C3	C3_R1.fastq.gz	C3_R2.fastq.gz	cisplatin	1	24	10	24	80
+V1	V1_R1.fastq.gz	V1_R2.fastq.gz	vehicle	1	24	0	24	80
+V2	V2_R1.fastq.gz	V2_R2.fastq.gz	vehicle	1	24	0	24	80
+V3	V3_R1.fastq.gz	V3_R2.fastq.gz	vehicle	1	24	0	24	80

@@ -1,0 +1,7 @@
+sample_id	condition	batch	treatment_duration_hours	cisplatin_concentration_uM	timepoint_hours	cell_confluence_pct
+C1	cisplatin	1	24	10	24	80
+C2	cisplatin	1	24	10	24	80
+C3	cisplatin	1	24	10	24	80
+V1	vehicle	1	24	0	24	80
+V2	vehicle	1	24	0	24	80
+V3	vehicle	1	24	0	24	80

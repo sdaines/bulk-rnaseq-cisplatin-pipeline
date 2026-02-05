@@ -1,0 +1,113 @@
+# ==============================================================================
+# Conda Environment for Bulk RNA-seq Pipeline
+# ==============================================================================
+# This file specifies all software dependencies for reproducible analysis.
+#
+# To create the environment:
+#   conda env create -f environment.yml
+#
+# To activate:
+#   conda activate bulk-rnaseq
+#
+# To update an existing environment:
+#   conda env update -f environment.yml --prune
+#
+# To export your current environment (with exact versions):
+#   conda env export --no-builds > environment_exact.yml
+# ==============================================================================
+
+name: bulk-rnaseq
+
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  # ------------------------------------------------------------------------------
+  # Core system utilities
+  # ------------------------------------------------------------------------------
+  - bash>=4.0
+  - coreutils
+  - bc
+  - grep
+  - sed
+  - gawk
+
+  # ------------------------------------------------------------------------------
+  # Alignment and quantification tools
+  # ------------------------------------------------------------------------------
+  - star=2.7.11a              # RNA-seq aligner
+  - subread=2.0.6             # Provides featureCounts
+  - samtools=1.19             # BAM file manipulation
+  - fastqc=0.12.1             # Read quality control
+  - fastp=0.23.4              # Adapter trimming and QC
+  - multiqc=1.19              # QC report aggregation
+
+  # ------------------------------------------------------------------------------
+  # R and core packages
+  # ------------------------------------------------------------------------------
+  - r-base=4.3.2
+  - r-essentials
+  - r-devtools
+  - r-yaml=2.3.7
+  - r-data.table=1.14.8
+  - r-ggplot2=3.4.4
+  - r-ggrepel=0.9.4
+  - r-pheatmap=1.0.12
+  - r-rcolorbrewer=1.1_3
+  - r-reshape2=1.4.4
+
+  # ------------------------------------------------------------------------------
+  # Bioconductor core
+  # ------------------------------------------------------------------------------
+  - bioconductor-biocinstaller
+  - bioconductor-biocversion=3.18.0
+
+  # ------------------------------------------------------------------------------
+  # Bioconductor analysis packages
+  # ------------------------------------------------------------------------------
+  - bioconductor-deseq2=1.42.0          # Differential expression
+  - bioconductor-gsva=1.50.0            # Single-sample GSEA (ssGSEA)
+  - bioconductor-fgsea=1.28.0           # Fast preranked GSEA
+  - bioconductor-annotationdbi=1.64.1   # Gene annotation interface
+  - bioconductor-org.hs.eg.db=3.18.0    # Human gene annotations
+  - bioconductor-clusterprofiler=4.10.0 # GO/KEGG enrichment analysis
+  - bioconductor-enrichplot=1.22.0      # Enrichment visualization
+  - bioconductor-dose=3.28.0            # Disease ontology enrichment
+
+  # ------------------------------------------------------------------------------
+  # Optional: Additional useful tools (commented out to reduce env size)
+  # ------------------------------------------------------------------------------
+  # - rseqc=5.0.1               # RNA-seq QC metrics
+  # - picard=3.1.0              # Alternative to samtools for duplicates
+  # - salmon=1.10.2             # Alternative quantification method
+  # - bioconductor-tximport     # Import transcript-level counts
+  # - bioconductor-clusterprofiler  # GO enrichment analysis
+
+  # ------------------------------------------------------------------------------
+  # Python (for potential utility scripts)
+  # ------------------------------------------------------------------------------
+  - python=3.11
+  - pip
+
+  # Pip-installable packages (optional)
+  # - pip:
+  #   - plotly
+  #   - pandas
+
+# ==============================================================================
+# Notes on versions:
+# ==============================================================================
+# - STAR 2.7.11a: Latest stable version with improved junction detection
+# - DESeq2 1.42.0: Corresponds to Bioconductor 3.18 (R 4.3)
+# - subread 2.0.6: Latest version of featureCounts
+# - samtools 1.19: Includes improved markdup functionality
+# ==============================================================================
+
+# ==============================================================================
+# Note: Some tools (especially STAR) require significant RAM:
+# - STAR genome indexing: 32GB RAM
+# - STAR alignment: 16GB RAM per thread
+# - DESeq2 analysis: 4-8GB RAM
+# ==============================================================================

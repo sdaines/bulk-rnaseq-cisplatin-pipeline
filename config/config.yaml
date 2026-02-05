@@ -1,0 +1,126 @@
+# ==============================================================================
+# Bulk RNA-seq Pipeline Configuration
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# GLOBAL: Reference genome and annotation
+# ------------------------------------------------------------------------------
+
+global:
+  # Genome build (GRCh38/hg38)
+  genome_build: "GRCh38"
+
+  # GENCODE annotation version
+  gencode_version: "v38"
+
+  # Organism databases for R/Bioconductor
+  org_db: "org.Hs.eg.db"
+  txdb: "TxDb.Hsapiens.UCSC.hg38.knownGene"
+
+
+# ------------------------------------------------------------------------------
+# PATHS: Directory structure
+# ------------------------------------------------------------------------------
+
+paths:
+  # Reference genome files (created by setup scripts)
+  references:
+    fasta: "data/references/GRCh38.primary_assembly.fa"
+    gtf: "data/references/gencode.v38.annotation.gtf"
+    star_index: "data/references/star_index"
+
+  # Reference download URLs (used by setup scripts)
+  reference_urls:
+    fasta: "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.primary_assembly.genome.fa.gz"
+    gtf: "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.annotation.gtf.gz"
+
+  # Raw data directories (not committed to repo; user must populate)
+  raw_data:
+    fastq_rnaseq: "data/fastq/rnaseq"
+
+  # Metadata sample sheet
+  metadata:
+    rnaseq: "metadata/samples_rnaseq.tsv"
+
+  # Pipeline outputs
+  results: "results"
+  logs: "logs"
+
+
+# ------------------------------------------------------------------------------
+# BULK RNA-SEQ: Alignment, quantification, and differential expression
+# ------------------------------------------------------------------------------
+
+bulk_rnaseq:
+  # Alignment parameters
+  alignment:
+    # Library strandedness: "unstranded", "forward", or "reverse"
+    strandedness: "unstranded"
+
+    # STAR parameters
+    star_threads: 8
+
+  # Quantification parameters
+  quantification:
+    # featureCounts mode
+    feature_type: "exon"
+    attribute_type: "gene_id"
+
+  # QC thresholds - samples below these are flagged, not removed
+  qc:
+    min_alignment_rate: 0.70      # Flag if < 70% uniquely mapped
+    min_mapped_reads: 1000000     # Flag if < 1M mapped reads
+
+  # Differential expression parameters
+  de:
+    # Gene filtering before normalization 
+    min_counts: 5                 # Exclude genes with < 5 counts across all samples
+
+    # Statistical threshold for hypothesis testing
+    fdr_threshold: 0.05           # Benjamini-Hochberg adjusted p-value cutoff
+
+    # Effect size filter for REPORTING ONLY (not part of hypothesis testing)
+    lfc_threshold: 1.0            # |log2 fold change| cutoff for reporting
+
+
+# ------------------------------------------------------------------------------
+# CONTRASTS: Experimental comparisons
+# ------------------------------------------------------------------------------
+
+contrasts:
+  rnaseq:
+    - name: "cisplatin_vs_vehicle"
+      numerator: "cisplatin"      # Condition in numerator (treatment)
+      denominator: "vehicle"      # Condition in denominator (control)
+      # Note: log2FC > 0 means higher in cisplatin; log2FC < 0 means higher in vehicle
+
+
+# ------------------------------------------------------------------------------
+# MARKER GENES: Genes of interest for expression plots
+# ------------------------------------------------------------------------------
+
+marker_genes:
+  # Interferon-stimulated genes
+  immune:
+    - IFIT1
+    - ISG15
+    - MX1
+    - OAS1
+    - RSAD2
+
+  # Cytotoxic markers
+  cytotoxic:
+    - PRF1
+    - NKG7
+
+  # Apoptosis markers
+  apoptosis:
+    - BAX
+    - BCL2
+    - CASP3
+    - TP53
+
+  # Custom markers
+  custom:
+    - GAPDH
+    - ACTB
