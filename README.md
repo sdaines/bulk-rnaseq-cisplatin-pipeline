@@ -200,22 +200,6 @@ contrasts:
 
 ---
 
-## Example Outputs
-
-See `docs/example_outputs/` for example figures from the demo:
-
-<table>
-<tr>
-<td><img src="docs/example_outputs/volcano_example.pdf" width="200"/><br/><b>Volcano Plot</b></td>
-<td><img src="docs/example_outputs/pca_example.pdf" width="200"/><br/><b>PCA Plot</b></td>
-<td><img src="docs/example_outputs/heatmap_example.pdf" width="200"/><br/><b>DE Heatmap</b></td>
-</tr>
-</table>
-
-*(Note: PDFs may not render on GitHub - download to view)*
-
----
-
 ## Key Methods
 
 ### DESeq2 Settings (Optimized for n=3)
