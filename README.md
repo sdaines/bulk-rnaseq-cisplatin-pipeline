@@ -38,7 +38,7 @@ cd bulk-rnaseq-pipeline
 ```
 
 **Demo Output:**
-- 42 differentially expressed genes
+- Example differential expression results (gene counts will vary by random seed)
 - Pathway enrichment analysis
 - PCA, volcano plots, heatmaps
 - All results in `results/`
@@ -194,8 +194,8 @@ bulk_rnaseq:
 contrasts:
   rnaseq:
     - name: "treatment_vs_control"
-      numerator: "treatment"
-      denominator: "control"
+      numerator: "cisplatin"
+      denominator: "vehicle"
 ```
 
 ---
@@ -279,11 +279,7 @@ Check `logs/` directory for detailed error messages.
 
 ## Acknowledgments
 
-This repository was organized and documented with assistance from [Claude Code](https://claude.ai/code) (Anthropic). The scientific analysis, pipeline development, and validation were performed by Saige Daines. Claude Code assisted with:
-- Repository structure and organization
-- Documentation formatting and clarity
-- Code consolidation and standardization
-- Creation of configuration files and examples
+This repository was organized and documented with assistance from [Claude Code](https://claude.ai/code) (Anthropic). All scientific analysis decisions, pipeline logic, and validation were performed by Saige Daines.
 
 ---
 
