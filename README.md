@@ -47,11 +47,11 @@ cd bulk-rnaseq-pipeline
 
 ## Features
 
-- ✅ **Optimized for small n**: DESeq2 settings tuned for n=3-6 replicates
-- ✅ **Complete workflow**: FASTQ → DE genes → pathway analysis
-- ✅ **Custom pathways**: Apoptosis, interferon, viral mimicry gene sets
-- ✅ **Reproducible**: Conda environment, version-controlled configs
-- ✅ **Demo mode**: Test without real data
+- **Optimized for small n**: DESeq2 settings tuned for n=3-6 replicates
+- **Complete workflow**: FASTQ → DE genes → pathway analysis
+- **Custom pathways**: Apoptosis, interferon, viral mimicry gene sets
+- **Reproducible**: Conda environment, version-controlled configs
+- **Demo mode**: Test without real data
 
 ---
 

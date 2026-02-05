@@ -16,18 +16,50 @@ out_dir <- "example_data"
 dir.create(out_dir, showWarnings = FALSE)
 
 # ------------------------------------------------------------------------------
-# Get real ENSEMBL IDs from database
+# Get real ENSEMBL IDs from database - prioritize marker/pathway genes
 # ------------------------------------------------------------------------------
 
-# Get all ENSEMBL IDs
+cat("  Collecting marker and pathway genes...\n")
+
+# Define marker genes (from config) and key pathway genes
+marker_genes <- c(
+  # Immune markers
+  "IFIT1", "ISG15", "MX1", "OAS1", "RSAD2", "PRF1", "NKG7",
+  # Apoptosis markers
+  "BAX", "BCL2", "CASP3", "TP53",
+  # Housekeeping
+  "GAPDH", "ACTB",
+  # Additional response genes
+  "CDKN1A", "GADD45A", "TP53I3", "BBC3", "FAS", "STAT1", "CXCL10",
+  "IRF1", "IRF3", "IRF7", "DHX58", "DDX58", "IFIH1", "MAVS",
+  "BID", "PUMA", "NOXA", "APAF1", "CYCS", "CASP9", "CASP8"
+)
+
+# Get ENSEMBL IDs for these priority genes
+cat("    Mapping", length(marker_genes), "priority genes to ENSEMBL...\n")
+priority_ensembl <- mapIds(org.Hs.eg.db, keys = marker_genes,
+                           column = "ENSEMBL", keytype = "SYMBOL", multiVals = "first")
+
+# Filter to valid mappings
+priority_ensembl <- na.omit(priority_ensembl)
+priority_symbols <- names(priority_ensembl)
+cat("    Mapped", length(priority_ensembl), "priority genes\n")
+
+# Get all available ENSEMBL IDs
 all_ensembl <- keys(org.Hs.eg.db, keytype = "ENSEMBL")
-cat("  Available ENSEMBL IDs:", length(all_ensembl), "\n")
 
-# Sample 300 genes
+# Exclude priority genes from random sample pool
+remaining_ensembl <- setdiff(all_ensembl, as.character(priority_ensembl))
+
+# Sample additional genes to reach 300 total
+n_additional <- 300 - length(priority_ensembl)
 set.seed(42)
-selected_ensembl <- sample(all_ensembl, 300)
+random_ensembl <- sample(remaining_ensembl, n_additional)
 
-# Get gene symbols for these
+# Combine priority and random genes
+selected_ensembl <- c(as.character(priority_ensembl), random_ensembl)
+
+# Get gene symbols for all selected genes
 gene_symbols <- mapIds(org.Hs.eg.db, keys = selected_ensembl,
                        column = "SYMBOL", keytype = "ENSEMBL", multiVals = "first")
 
@@ -43,21 +75,24 @@ gene_map <- gene_map[!is.na(gene_map$symbol), ]
 n_genes <- nrow(gene_map)
 
 cat("  Selected", n_genes, "genes with valid symbols\n")
+cat("    Priority genes:", sum(gene_map$symbol %in% marker_genes), "\n")
 
-# Define specific genes for differential expression
-# Find ENSEMBL IDs for known cisplatin-responsive genes
-known_genes <- c("IFIT1", "ISG15", "BAX", "CDKN1A", "GADD45A", "TP53I3",
-                 "BBC3", "FAS", "CASP3", "MX1", "OAS1", "STAT1")
+# Define upregulated genes (prioritize immune/interferon response genes)
+immune_genes <- c("IFIT1", "ISG15", "MX1", "OAS1", "RSAD2", "CXCL10",
+                  "IRF1", "IRF3", "IRF7", "DHX58", "DDX58", "IFIH1", "MAVS", "STAT1")
+apoptosis_genes <- c("BAX", "CASP3", "CASP9", "CASP8", "BID", "PUMA", "APAF1", "CYCS")
 
-up_genes_idx <- which(gene_map$symbol %in% known_genes)
+up_genes_idx <- which(gene_map$symbol %in% c(immune_genes, apoptosis_genes))
+
+# Add random genes if needed to reach 20 upregulated
 if (length(up_genes_idx) < 20) {
-  # Add random genes to upregulated set
   remaining <- setdiff(1:n_genes, up_genes_idx)
   up_genes_idx <- c(up_genes_idx, sample(remaining, 20 - length(up_genes_idx)))
 }
 
-# Downregulated genes (random selection)
-remaining <- setdiff(1:n_genes, up_genes_idx)
+# Downregulated genes (random selection, excluding markers)
+marker_idx <- which(gene_map$symbol %in% marker_genes)
+remaining <- setdiff(setdiff(1:n_genes, up_genes_idx), marker_idx)
 down_genes_idx <- sample(remaining, 10)
 
 cat("  Upregulated genes:", length(up_genes_idx), "\n")

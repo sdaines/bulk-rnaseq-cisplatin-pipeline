@@ -222,18 +222,20 @@ for (contrast in contrasts) {
       if (nrow(ego_bp@result) > 0) {
         n_plot <- min(TOP_N_PLOTS, nrow(ego_bp@result))
         p <- dotplot(ego_bp, showCategory = n_plot) +
-          ggtitle(paste("GO Biological Process -", contrast_name))
+          ggtitle(paste("GO Biological Process -", contrast_name)) +
+          theme(axis.text.y = element_text(size = 10))
 
         plot_file <- file.path(out_dir, paste0("go_dotplot_BP_", contrast_name, ".pdf"))
-        ggsave(plot_file, p, width = 10, height = max(6, n_plot * 0.3))
+        ggsave(plot_file, p, width = 12, height = max(8, n_plot * 0.4))
         cat("    Saved:", basename(plot_file), "\n")
 
-        # Bar plot
+        # Bar plot (labels on y-axis by default)
         p_bar <- barplot(ego_bp, showCategory = n_plot) +
-          ggtitle(paste("GO Biological Process -", contrast_name))
+          ggtitle(paste("GO Biological Process -", contrast_name)) +
+          theme(axis.text.y = element_text(size = 9))
 
         plot_file_bar <- file.path(out_dir, paste0("go_barplot_BP_", contrast_name, ".pdf"))
-        ggsave(plot_file_bar, p_bar, width = 10, height = max(6, n_plot * 0.3))
+        ggsave(plot_file_bar, p_bar, width = 14, height = max(10, n_plot * 0.5))
         cat("    Saved:", basename(plot_file_bar), "\n")
       }
     } else {
@@ -275,10 +277,11 @@ for (contrast in contrasts) {
       if (nrow(ego_mf@result) > 0) {
         n_plot <- min(TOP_N_PLOTS, nrow(ego_mf@result))
         p <- dotplot(ego_mf, showCategory = n_plot) +
-          ggtitle(paste("GO Molecular Function -", contrast_name))
+          ggtitle(paste("GO Molecular Function -", contrast_name)) +
+          theme(axis.text.y = element_text(size = 10))
 
         plot_file <- file.path(out_dir, paste0("go_dotplot_MF_", contrast_name, ".pdf"))
-        ggsave(plot_file, p, width = 10, height = max(6, n_plot * 0.3))
+        ggsave(plot_file, p, width = 12, height = max(8, n_plot * 0.4))
         cat("    Saved:", basename(plot_file), "\n")
       }
     } else {
@@ -320,10 +323,11 @@ for (contrast in contrasts) {
       if (nrow(ego_cc@result) > 0) {
         n_plot <- min(TOP_N_PLOTS, nrow(ego_cc@result))
         p <- dotplot(ego_cc, showCategory = n_plot) +
-          ggtitle(paste("GO Cellular Component -", contrast_name))
+          ggtitle(paste("GO Cellular Component -", contrast_name)) +
+          theme(axis.text.y = element_text(size = 10))
 
         plot_file <- file.path(out_dir, paste0("go_dotplot_CC_", contrast_name, ".pdf"))
-        ggsave(plot_file, p, width = 10, height = max(6, n_plot * 0.3))
+        ggsave(plot_file, p, width = 12, height = max(8, n_plot * 0.4))
         cat("    Saved:", basename(plot_file), "\n")
       }
     } else {
@@ -366,10 +370,11 @@ for (contrast in contrasts) {
       if (nrow(kegg@result) > 0) {
         n_plot <- min(TOP_N_PLOTS, nrow(kegg@result))
         p <- dotplot(kegg, showCategory = n_plot) +
-          ggtitle(paste("KEGG Pathways -", contrast_name))
+          ggtitle(paste("KEGG Pathways -", contrast_name)) +
+          theme(axis.text.y = element_text(size = 10))
 
         plot_file <- file.path(out_dir, paste0("kegg_dotplot_", contrast_name, ".pdf"))
-        ggsave(plot_file, p, width = 10, height = max(6, n_plot * 0.3))
+        ggsave(plot_file, p, width = 12, height = max(8, n_plot * 0.4))
         cat("    Saved:", basename(plot_file), "\n")
       }
     } else {
