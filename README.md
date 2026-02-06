@@ -9,7 +9,7 @@ A complete, reproducible pipeline for bulk RNA-seq differential expression and p
 
 ## Overview
 
-End-to-end analysis from FASTQ files to publication-ready results:
+End-to-end analysis from FASTQ files to results:
 
 ```
 FASTQ → Alignment → Quantification → DESeq2 → Pathway Analysis → Plots
